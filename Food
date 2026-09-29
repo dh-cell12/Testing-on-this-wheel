@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Dinner Selector</title>
+
+<style>
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+
+    background: linear-gradient(
+        135deg,
+        #101827,
+        #1c3557
+    );
+
+    color: white;
+
+    text-align: center;
+
+    padding: 40px 20px;
+}
+
+
+h1 {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+
+.subtitle {
+    color: #cbd5e1;
+    margin-bottom: 35px;
+}
+
+
+.container {
+    max-width: 700px;
+    margin: auto;
+}
+
+
+.cuisine-buttons {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(140px, 1fr));
+
+    gap: 15px;
+}
+
+
+.cuisine {
+    padding: 20px;
+
+    border: none;
+
+    border-radius: 15px;
+
+    background: #ffffff;
+
+    color: #172033;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+
+.cuisine:hover {
+    transform: translateY(-4px);
+}
+
+
+#foodSection {
+    display: none;
+
+    margin-top: 40px;
+}
+
+
+.food-list {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(150px, 1fr));
+
+    gap: 12px;
+
+    margin-top: 20px;
+}
+
+
+.food {
+    background: rgba(255,255,255,0.12);
+
+    border: 1px solid
+    rgba(255,255,255,0.2);
+
+    padding: 15px;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+}
+
+
+.food:hover {
+    background: rgba(255,255,255,0.22);
+}
+
+
+.result {
+    margin-top: 30px;
+
+    font-size: 25px;
+
+    font-weight: bold;
+}
+
+
+.spin {
+    margin-top: 25px;
+
+    padding: 15px 35px;
+
+    border: none;
+
+    border-radius: 30px;
+
+    background: #ffcf33;
+
+    color: #111827;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+
+.back {
+    margin-top: 30px;
+
+    padding: 10px 25px;
+
+    border: none;
+
+    border-radius: 20px;
+
+    cursor: pointer;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+<h1>🍽️ Dinner Selector</h1>
+
+<p class="subtitle">
+What do you feel like eating today?
+</p>
+
+
+<h2>Choose a cuisine</h2>
+
+
+<div class="cuisine-buttons">
+
+
+<button class="cuisine"
+onclick="showFood('Japanese')">
+
+🇯🇵 Japanese
+
+</button>
+
+
+<button class="cuisine"
+onclick="showFood('Korean')">
+
+🇰🇷 Korean
+
+</button>
+
+
+<button class="cuisine"
+onclick="showFood('Chinese')">
+
+🇨🇳 Chinese
+
+</button>
+
+
+<button class="cuisine"
+onclick="showFood('Thai')">
+
+🇹🇭 Thai
+
+</button>
+
+
+<button class="cuisine"
+onclick="showFood('Indian')">
+
+🇮🇳 Indian
+
+</button>
+
+
+<button class="cuisine"
+onclick="showFood('Singapore')">
+
+🇸🇬 Singapore
+
+</button>
+
+
+<button class="cuisine"
+onclick="showFood('Western')">
+
+🌎 Western
+
+</button>
+
+
+</div>
+
+
+<div id="foodSection">
+
+<h2 id="foodTitle"></h2>
+
+<div
+id="foodList"
+class="food-list">
+</div>
+
+
+<button
+class="spin"
+onclick="randomFood()">
+
+🎲 PICK FOR ME
+
+</button>
+
+
+<div
+id="result"
+class="result">
+</div>
+
+
+<button
+class="back"
+onclick="goBack()">
+
+← Back
+
+</button>
+
+</div>
+
+
+</div>
+
+
+<script>
+
+
+const foodOptions = {
+
+
+Japanese: [
+
+"🍜 Ramen",
+
+"🍣 Sushi",
+
+"🐟 Sashimi",
+
+"🍚 Donburi",
+
+"🍜 Udon",
+
+"🍜 Soba",
+
+"🍢 Yakitori",
+
+"🥩 Tonkatsu",
+
+"🍤 Tempura",
+
+"🍛 Japanese Curry",
+
+"🥘 Teppanyaki",
+
+"🍲 Shabu Shabu",
+
+"🍲 Sukiyaki",
+
+"🍶 Izakaya"
+
+],
+
+
+Korean: [
+
+"🥩 Korean BBQ",
+
+"🍗 Korean Fried Chicken",
+
+"🍲 Army Stew",
+
+"🍚 Bibimbap",
+
+"🌶️ Tteokbokki",
+
+"🍜 Jajangmyeon",
+
+"🍲 Korean Hotpot",
+
+"🥩 Bossam",
+
+"🍗 Ginseng Chicken",
+
+"🍜 Naengmyeon"
+
+],
+
+
+Chinese: [
+
+"🥟 Dim Sum",
+
+"🍲 Hotpot",
+
+"🌶️ Sichuan",
+
+"🍜 Cantonese",
+
+"🌶️ Mala",
+
+"🥩 Roast Meat",
+
+"🥟 Dumplings",
+
+"🍜 Chinese Noodles",
+
+"🍲 Congee",
+
+"🦆 Peking Duck",
+
+"🦐 Chinese Seafood"
+
+],
+
+
+Thai: [
+
+"🍢 Mookata",
+
+"🍲 Tom Yum",
+
+"🦐 Thai Seafood",
+
+"🍜 Pad Thai",
+
+"🍲 Thai Hotpot",
+
+"🍛 Green Curry",
+
+"🌶️ Basil Chicken",
+
+"🍜 Boat Noodles"
+
+],
+
+
+Indian: [
+
+"🍛 Indian Curry",
+
+"🍚 Biryani",
+
+"🍗 Tandoori",
+
+"🫓 Naan",
+
+"🍛 South Indian",
+
+"🍛 North Indian",
+
+"🥗 Indian Vegetarian"
+
+],
+
+
+Singapore: [
+
+"🍚 Chicken Rice",
+
+"🍚 Nasi Lemak",
+
+"🍲 Bak Kut Teh",
+
+"🍜 Zi Char",
+
+"🍜 Laksa",
+
+"🍜 Hokkien Mee",
+
+"🍢 Satay",
+
+"🐟 Fish Soup",
+
+"🦐 Seafood"
+
+],
+
+
+Western: [
+
+"🥩 Steak",
+
+"🍔 Burger",
+
+"🍕 Pizza",
+
+"🍝 Pasta",
+
+"🍗 Chicken Chop",
+
+"🐟 Fish & Chips",
+
+"🥩 Western Grill"
+
+]
+
+};
+
+
+let currentCuisine = "";
+
+
+function showFood(cuisine) {
+
+    currentCuisine = cuisine;
+
+
+    document
+        .getElementById("foodSection")
+        .style.display = "block";
+
+
+    document
+        .getElementById("foodTitle")
+        .textContent =
+        cuisine + " Food";
+
+
+    const list =
+        document.getElementById(
+            "foodList"
+        );
+
+
+    list.innerHTML = "";
+
+
+    foodOptions[cuisine].forEach(
+        function(food) {
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+
+            item.className = "food";
+
+            item.textContent = food;
+
+            list.appendChild(item);
+
+        }
+    );
+
+
+    document
+        .getElementById("result")
+        .textContent = "";
+
+}
+
+
+function randomFood() {
+
+    const foods =
+        foodOptions[currentCuisine];
+
+
+    const randomIndex =
+        Math.floor(
+            Math.random() *
+            foods.length
+        );
+
+
+    const selected =
+        foods[randomIndex];
+
+
+    document
+        .getElementById("result")
+        .textContent =
+        "Tonight: " + selected;
+
+}
+
+
+function goBack() {
+
+    document
+        .getElementById("foodSection")
+        .style.display = "none";
+
+
+    document
+        .getElementById("result")
+        .textContent = "";
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>
